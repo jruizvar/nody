@@ -43,10 +43,10 @@ func GetIPsByUsername(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUsersByIP(w http.ResponseWriter, r *http.Request) {
-	name := chi.URLParam(r, "ip")
+	ip := chi.URLParam(r, "ip")
 	ctx := r.Context()
 	ctx = db.Driver(ctx)
-	users, err := controler.GetUsersByIP(ctx, name)
+	users, err := controler.GetUsersByIP(ctx, ip)
 	if err != nil {
 		panic(err)
 	}
