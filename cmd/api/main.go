@@ -11,6 +11,7 @@ import (
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.Heartbeat("/ping"))
 
 	// fill the graph
 	r.Post("/users", handler.CreateUser)
@@ -22,6 +23,5 @@ func main() {
 	r.Get("/users/{name}/ipv4s", handler.GetIPsByUsername)
 	r.Get("/ipv4s/{ip}/users", handler.GetUsersByIP)
 
-	r.Get("/ping", handler.Ping)
 	http.ListenAndServe(":3000", r)
 }

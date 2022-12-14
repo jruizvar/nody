@@ -9,10 +9,6 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func Ping(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("pong"))
-}
-
 func GetUsernames(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	ctx = db.Driver(ctx)
