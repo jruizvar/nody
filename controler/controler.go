@@ -2,14 +2,12 @@ package controler
 
 import (
 	"context"
-	"nody/db"
 	"nody/model"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func CreateUser(ctx context.Context, user model.User) error {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func CreateUser(ctx context.Context, driver neo4j.DriverWithContext, user model.User) error {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	_, err := session.ExecuteWrite(ctx, model.CreateUser(ctx, user))
@@ -19,8 +17,7 @@ func CreateUser(ctx context.Context, user model.User) error {
 	return nil
 }
 
-func CreateIPv4(ctx context.Context, ipv4 model.IPv4) error {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func CreateIPv4(ctx context.Context, driver neo4j.DriverWithContext, ipv4 model.IPv4) error {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	_, err := session.ExecuteWrite(ctx, model.CreateIPv4(ctx, ipv4))
@@ -30,8 +27,7 @@ func CreateIPv4(ctx context.Context, ipv4 model.IPv4) error {
 	return nil
 }
 
-func CreateHasIP(ctx context.Context, hasip model.HasIP) error {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func CreateHasIP(ctx context.Context, driver neo4j.DriverWithContext, hasip model.HasIP) error {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	_, err := session.ExecuteWrite(ctx, model.CreateHasIP(ctx, hasip))
@@ -41,8 +37,7 @@ func CreateHasIP(ctx context.Context, hasip model.HasIP) error {
 	return nil
 }
 
-func GetUsernames(ctx context.Context) ([]string, error) {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func GetUsernames(ctx context.Context, driver neo4j.DriverWithContext) ([]string, error) {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	result, err := session.ExecuteWrite(ctx, model.GetUsernames(ctx))
@@ -52,8 +47,7 @@ func GetUsernames(ctx context.Context) ([]string, error) {
 	return result.([]string), nil
 }
 
-func GetIPsByUsername(ctx context.Context, name string) ([]string, error) {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func GetIPsByUsername(ctx context.Context, driver neo4j.DriverWithContext, name string) ([]string, error) {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	result, err := session.ExecuteWrite(ctx, model.GetIPsByUsername(ctx, name))
@@ -63,8 +57,7 @@ func GetIPsByUsername(ctx context.Context, name string) ([]string, error) {
 	return result.([]string), nil
 }
 
-func GetUsersByIP(ctx context.Context, ip string) ([]string, error) {
-	driver := ctx.Value(db.DriverContextKey("driver")).(neo4j.DriverWithContext)
+func GetUsersByIP(ctx context.Context, driver neo4j.DriverWithContext, ip string) ([]string, error) {
 	session := driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	result, err := session.ExecuteWrite(ctx, model.GetUsersByIP(ctx, ip))

@@ -1,15 +1,12 @@
 package db
 
 import (
-	"context"
 	"os"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-type DriverContextKey string
-
-func Driver(ctx context.Context) context.Context {
+func Driver() neo4j.DriverWithContext {
 	dbUri := os.Getenv("DBURI")
 	dbadmin := os.Getenv("DBADMIN")
 	dbpassw := os.Getenv("DBPASSW")
@@ -17,5 +14,5 @@ func Driver(ctx context.Context) context.Context {
 	if err != nil {
 		panic(err)
 	}
-	return context.WithValue(ctx, DriverContextKey("driver"), driver)
+	return driver
 }
