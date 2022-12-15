@@ -19,11 +19,10 @@ func main() {
 
 	// neo4j driver
 	driver := db.Driver()
-
 	ctx := context.Background()
 	defer driver.Close(ctx)
 
-	// fill the graph
+	// create user
 	r.Post("/users", func(w http.ResponseWriter, r *http.Request) {
 		var user model.User
 		if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
@@ -35,6 +34,7 @@ func main() {
 		w.Write([]byte("User created"))
 	})
 
+	// create ipv4
 	r.Post("/ipv4s", func(w http.ResponseWriter, r *http.Request) {
 		var ipv4 model.IPv4
 		if err := json.NewDecoder(r.Body).Decode(&ipv4); err != nil {
@@ -46,6 +46,7 @@ func main() {
 		w.Write([]byte("IP created"))
 	})
 
+	// create has_ip
 	r.Post("/hasip", func(w http.ResponseWriter, r *http.Request) {
 		var hasip model.HasIP
 		if err := json.NewDecoder(r.Body).Decode(&hasip); err != nil {
@@ -57,7 +58,7 @@ func main() {
 		w.Write([]byte("Relationship HAS_IP created."))
 	})
 
-	// query the graph
+	// get usernames
 	r.Get("/users/names", func(w http.ResponseWriter, r *http.Request) {
 		names, err := controler.GetUsernames(ctx, driver)
 		if err != nil {
@@ -70,6 +71,7 @@ func main() {
 		w.Write(response)
 	})
 
+	// get ips by username
 	r.Get("/users/{name}/ipv4s", func(w http.ResponseWriter, r *http.Request) {
 		name := chi.URLParam(r, "name")
 		ipv4s, err := controler.GetIPsByUsername(ctx, driver, name)
@@ -83,6 +85,7 @@ func main() {
 		w.Write(response)
 	})
 
+	// get users by ip
 	r.Get("/ipv4s/{ip}/users", func(w http.ResponseWriter, r *http.Request) {
 		ip := chi.URLParam(r, "ip")
 		users, err := controler.GetUsersByIP(ctx, driver, ip)
